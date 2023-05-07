@@ -25,10 +25,14 @@ async function create_prompt(message, service_id=null) {
     requestNonce: ""+Math.random(),
     isGroupType: false,
     isDebugMode: false,
-    otcCode: true
+    otcCode: false
   }
+  console.log("Sending data: ", data);
 
-  return await send_message(data);  
+  let result = await send_message(data);
+  console.log("Received response: ", result);
+
+  return result
 }
 
 async function get_offers() {
@@ -57,7 +61,8 @@ async function populate_offers() {
 }
 
 function button_callback() {
-  create_prompt(from_id("prompt_message").value);
+  let service_id = from_id("service_id_input").value;
+  create_prompt(from_id("prompt_message").value, service_id);
 }
 
 function iframe_onload() {

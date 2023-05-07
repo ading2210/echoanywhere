@@ -17,9 +17,14 @@
   <p>Found by vk6#7391 (ading2210 on Github).</p>
 
   <h2>Payloads:</h2>
+  <p style="margin-bottom: 4px;">Service Name:</p>
   <textarea id="prompt_message" style="width: 100%">This prompt should not exist on this page!</textarea>
   <br>
-  <a id="prompts_button"><button>Create Prompt</button></a>
+  <p style="margin-bottom: 4px;">Service ID:</p>
+  <input id="service_id_input" type="text" placeholder="Leave this blank for a random serviceId." style="width: 100%;">
+  <br><br>
+  <a id="prompts_button"><button style="margin-bottom: 16px;">Create Prompt</button></a>
+  <p>Check the console for the returned data.</p>
 
   <h2>Leaked Data:</h2>
   <p>Your board: <code id="cros_board"></code></p>
@@ -38,9 +43,9 @@
   </details>
 
   <h2>Explanation:</h2>
-  <p>Any webpage is able to create an iframe to <code>chrome-extension://kddnkjkcjddckihglkfcickdhbmaodcn/broker.html</code>, which is the page for the Chrome Goodies extension.</p>
-  <p>The webpage can then simply call <code>iframe.contentWindow.postMessage</code> on the iframe, which proxies <code>chrome.echoPrivate.getUserConsent</code> or <code>chrome.echoPrivate.getOfferInfo</code>.</p>
-  <p>It's literally that simple.</p>
+  <p>This page exploits the Chrome Goodies component extension, which is used to check device eligibility on the <a href="https://www.google.com/chromebook/perks/" target="_blank">Chromebook Perks</a> page. That page works by putting an extension page inside an iframe (<code>chrome-extension://kddnkjkcjddckihglkfcickdhbmaodcn/broker.html</code>) and posting messages to it to allow communication with the extension.</p>
+  <p> For whatever reason, this is also allowed by the extension on any webpage. Thus, any webpage is able to pretend to be the Perks page and post messages to the iframe in order to redeem codes and get the existing offers.</p>
+  <p>The webpage can then simply call <code>iframe.contentWindow.postMessage</code> on the iframe, which proxies either <code>chrome.echoPrivate.getUserConsent</code> or <code>chrome.echoPrivate.getOfferInfo</code>. This allows the webpage to leak any existing promo codes, even without user consent. It could also potentially trick the user into redeeming other codes, since the title of the redemption prompt can be arbitrarily changed.</p>
   <p>The JS for this page is available at <a href="./echo.js"><code>./echo.js</a></code>.</p>
 </body>
 
