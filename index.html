@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>chrome.echoPrivate Shenanigans</title>
+  <link rel="stylesheet" href="https://fonts.xz.style/serve/inter.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@exampledev/new.css@latest/new.min.css">  
+  <script>function from_id(id){return document.getElementById(id)}</script>
+  <script src="./echo.js"></script>
+</head>
+
+<body>
+  <h1>chrome.echoPrivate shenanigans</h1>
+  <p>This is a POC demonstrating the (limited) use of <code>chrome.echoPrivate</code> on any webpage.</p>
+  <p>Found by vk6#7391 (ading2210 on Github).</p>
+
+  <h2>Payloads:</h2>
+  <textarea id="prompt_message" style="width: 100%">This prompt should not exist on this page!</textarea>
+  <br>
+  <a id="prompts_button"><button>Create Prompt</button></a>
+
+  <h2>Leaked Data:</h2>
+  <p>Your board: <code id="cros_board"></code></p>
+  <p>Last service ID: <code id="last_id"></code></p>
+  <details id="offers_detail">
+    <summary>Your promo codes:</summary>
+    <ul id="promos_list">
+
+    </ul>
+  </details>
+  <details id="offers_detail">
+    <summary>Your offers:</summary>
+    <ul id="offers_list">
+
+    </ul>
+  </details>
+
+  <h2>Explanation:</h2>
+  <p>Any webpage is able to create an iframe to <code>chrome-extension://kddnkjkcjddckihglkfcickdhbmaodcn/broker.html</code>, which is the page for the Chrome Goodies extension.</p>
+  <p>The webpage can then simply call <code>iframe.contentWindow.postMessage</code> on the iframe, which proxies <code>chrome.echoPrivate.getUserConsent</code> or <code>chrome.echoPrivate.getOfferInfo</code>.</p>
+  <p>It's literally that simple.</p>
+  <p>The JS for this page is available at <a href="./echo.js"><code>./echo.js</a></code>.</p>
+</body>
+
+</html>
